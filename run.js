@@ -2,7 +2,6 @@ const WebPageTest = require('webpagetest');
 const axios = require('axios');
 const fs = require('fs');
 const schedule = require('node-schedule');
-const readline = require('readline');
 
 const wpt = new WebPageTest('www.webpagetest.org');
 
@@ -11,13 +10,13 @@ const getPageDataUrl = (id) => `http://www.webpagetest.org/result/${id}/page_dat
 const fetchPageData = async (testId, fileName, mobile) => {
     const result = await axios.get(getPageDataUrl(testId));
     let csvString = result.data;
-    const file = mobile ? fileName : `mobile_${fileName}`;
+
+    const file = mobile ? `mobile_${fileName}` : fileName;
 
     if (fs.existsSync(file) && fs.statSync(file).size > 0) {
         csvString = csvString.split('\n').slice(1).join('\n')
     }
     fs.appendFileSync(file, csvString);
-    // console.log(result)
 }
 
 const runTest = (page, fileName, mobile, key) => {
@@ -27,7 +26,7 @@ const runTest = (page, fileName, mobile, key) => {
         pollResults: 5,
         timeout: 180,
         key,
-        location: mobile ? 'Dulles_MotoG4' : undefined
+        ...(mobile ? {location: 'Dulles_MotoG4'} : {})
     }, (err, data) => {
         if (data) {
             fetchPageData(data.data.id, fileName, mobile)
