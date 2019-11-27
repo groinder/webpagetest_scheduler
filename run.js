@@ -27,7 +27,7 @@ const runTest = (page, fileName, mobile, key) => {
         pollResults: 5,
         timeout: 180,
         key,
-        location: mobile ? 'Dulles_MotoG4' : 'ec2-eu-west-3'
+        location: mobile ? 'Dulles_MotoG4' : undefined
     }, (err, data) => {
         if (data) {
             fetchPageData(data.data.id, fileName, mobile)
