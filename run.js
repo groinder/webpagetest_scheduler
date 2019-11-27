@@ -52,4 +52,5 @@ const pages = [
     ['https://www.amazon.com/', 'amazon.csv', 'A.ec02ae740d391c7060f903abf3ff3cc7']
 ];
 
+console.log('Schedule started, press Ctrl+C to stop...')
 scheduleTest(pages,  '0 * * * *')
